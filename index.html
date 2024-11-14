@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="./js/app.js" defer></script>
+    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="notion-app">
+      <nav class="sidebar">
+        <div class="sidebar__header">
+          <div class="sidebar__header-user">
+            <!-- <div class="sidebar__header-user-profile">
+              <img src="./img/profile.jpg" alt="profile" />
+            </div> -->
+            <div class="sidebar__header-user-profile-none">D</div>
+            <span>den의 Notion</span>
+            <div><img src="/img/arrow-down.svg" alt="" /></div>
+          </div>
+          <div class="sidebar__header_button-hide">
+            <img src="/img/double-arrow-left.svg" alt="" />
+          </div>
+          <div class="sidebar__header_button-create">
+            <img src="/img/create.svg" alt="" />
+          </div>
+        </div>
+        <ul class="sidebar__search">
+          <li><img src="/img/search.svg" alt="" />검색</li>
+          <li><img src="/img/home.svg" alt="" />홈</li>
+          <li><img src="/img/inbox.svg" alt="" />수신함</li>
+        </ul>
+        <div>
+          <div><span>개인 페이지</span></div>
+        </div>
+        <ul class="sidebar__setting">
+          <li><img src="/img/calendar.svg" alt="" />캘린더</li>
+          <li><img src="/img/setting.svg" alt="" />설정</li>
+          <li><img src="/img/shapes.svg" alt="" />템플릿</li>
+          <li><img src="/img/trash.svg" alt="" />휴지통</li>
+          <li><img src="/img/question-circle.svg" alt="" />도움말</li>
+        </ul>
+        <div class="sidebar__footer">
+          <div><img src="/img/user-plus.svg" alt="" />멤버 초대</div>
+        </div>
+      </nav>
+      <div class="editor">
+        <nav class="editor__nav">
+          <div>20.08.21</div>
+          <div class="editor__nav-addi">
+            <span>공유</span>
+            <div><img src="/img/chat.svg" alt="" /></div>
+            <div><img src="/img/clock.svg" alt="" /></div>
+            <div><img src="/img/star.svg" alt="" /></div>
+            <div><img src="/img/ellip-hor.svg" alt="" /></div>
+          </div>
+        </nav>
+        <div class="editor__main">
+          <div></div>
+          <div class="editor__main-content">
+            <h1
+              class="editor__main-content-title"
+              contenteditable="true"
+              placeholder="새 페이지"
+            ></h1>
+            <div class="editor__main-content-contentarea">
+              <p
+                class="editor__main-content-content"
+                contenteditable="true"
+                placeholder="글을 작성하거나 AI를 사용하려면 '스페이스' 키를, 명령어를 사용하려면 ' / ' 키를 누르세요."
+              ></p>
+            </div>
+          </div>
+          <div></div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

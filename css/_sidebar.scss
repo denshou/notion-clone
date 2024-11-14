@@ -1,0 +1,57 @@
+.sidebar {
+  background-color: #f7f7f5;
+  min-width: 248px;
+}
+.sidebar__header {
+  display: flex;
+}
+.sidebar__header-user {
+  display: flex;
+}
+.sidebar__header-user-profile {
+  border-radius: 20%;
+  width: 26px;
+  height: 26px;
+  overflow: hidden;
+  img {
+    width: 100%;
+    object-fit: cover;
+  }
+}
+.sidebar__header-user-profile-none {
+    background-color: #E5E5E2;
+    border-radius: 20%;
+    width: 26px;
+    height: 26px;
+    overflow: hidden;
+    text-align: center;
+    line-height: 26px;
+  }
+
+.sidebar__header_button-hide {
+  img {
+    width: 20px;
+  }
+}
+.sidebar__header_button-create {
+  img {
+    width: 20px;
+  }
+}
+
+.sidebar__search {
+  img {
+    width: 20px;
+  }
+}
+
+.sidebar__setting {
+  img {
+    width: 20px;
+  }
+}
+.sidebar__footer {
+  img {
+    width: 20px;
+  }
+}
