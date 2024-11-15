@@ -23,44 +23,85 @@
             </div> -->
             <div class="sidebar__header-user-profile-none">D</div>
             <span>den의 Notion</span>
-            <div><img src="/img/arrow-down.svg" alt="" /></div>
+            <div class="sidebar__header-user-show">
+              <img src="/img/arrow-down.svg" alt="arrowdown" />
+            </div>
           </div>
-          <div class="sidebar__header_button-hide">
-            <img src="/img/double-arrow-left.svg" alt="" />
-          </div>
-          <div class="sidebar__header_button-create">
-            <img src="/img/create.svg" alt="" />
+          <div class="sidebar__header-aside">
+            <div class="sidebar__header_button hide">
+              <img src="/img/double-arrow-left.svg" alt="doublearrowleft" />
+            </div>
+            <div class="sidebar__header_button create">
+              <img src="/img/create.svg" alt="create" />
+            </div>
           </div>
         </div>
         <ul class="sidebar__search">
-          <li><img src="/img/search.svg" alt="" />검색</li>
-          <li><img src="/img/home.svg" alt="" />홈</li>
-          <li><img src="/img/inbox.svg" alt="" />수신함</li>
+          <li><img src="/img/search.svg" alt="search" /><span>검색</span></li>
+          <li><img src="/img/home.svg" alt="home" /><span>홈</span></li>
+          <li><img src="/img/inbox.svg" alt="inbox" /><span>수신함</span></li>
         </ul>
-        <div>
-          <div><span>개인 페이지</span></div>
+        <div class="sidebar__scroll">
+          <div class="sidebar__private">
+            <div class="sidebar__private-header">
+              <span>개인 페이지</span>
+              <div class="sidebar__private-buttons">
+                <div><img src="/img/ellip-hor.svg" alt="eli" /></div>
+                <div><img src="/img/plus.svg" alt="plus" /></div>
+              </div>
+            </div>
+            <ul>
+              <li data-id="mypage">
+                <div class="sidebar__private-left">
+                  <img src="/img/document.svg" alt="doc" />
+                  <span>1234</span>
+                </div>
+                <div class="sidebar__private-buttons">
+                  <div><img src="/img/ellip-hor.svg" alt="" /></div>
+                  <div><img src="/img/plus.svg" alt="" /></div>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <ul class="sidebar__setting">
+            <li>
+              <img src="/img/calendar.svg" alt="calendar" /><span>캘린더</span>
+            </li>
+            <li>
+              <img src="/img/setting.svg" alt="setting" /><span>설정</span>
+            </li>
+            <li>
+              <img src="/img/shapes.svg" alt="shapes" /><span>템플릿</span>
+            </li>
+            <li><img src="/img/trash.svg" alt="trash" /><span>휴지통</span></li>
+            <li>
+              <img src="/img/question-circle.svg" alt="question" /><span
+                >도움말</span
+              >
+            </li>
+          </ul>
         </div>
-        <ul class="sidebar__setting">
-          <li><img src="/img/calendar.svg" alt="" />캘린더</li>
-          <li><img src="/img/setting.svg" alt="" />설정</li>
-          <li><img src="/img/shapes.svg" alt="" />템플릿</li>
-          <li><img src="/img/trash.svg" alt="" />휴지통</li>
-          <li><img src="/img/question-circle.svg" alt="" />도움말</li>
-        </ul>
         <div class="sidebar__footer">
-          <div><img src="/img/user-plus.svg" alt="" />멤버 초대</div>
+          <ul class="sidebar__footer-ul">
+            <li>
+              <img src="/img/user-plus.svg" alt="invite" /><span
+                >멤버 초대</span
+              >
+            </li>
+          </ul>
         </div>
       </nav>
       <div class="editor">
         <nav class="editor__nav">
-          <div>20.08.21</div>
-          <div class="editor__nav-addi">
-            <span>공유</span>
-            <div><img src="/img/chat.svg" alt="" /></div>
-            <div><img src="/img/clock.svg" alt="" /></div>
-            <div><img src="/img/star.svg" alt="" /></div>
-            <div><img src="/img/ellip-hor.svg" alt="" /></div>
-          </div>
+          <div>새 페이지</div>
+          <ul class="editor__nav-addi">
+            <li><span>공유</span></li>
+            <li><img src="/img/chat.svg" alt="chat" /></li>
+            <li><img src="/img/clock.svg" alt="clock" /></li>
+            <li><img src="/img/star.svg" alt="star" /></li>
+            <li><img src="/img/ellip-hor.svg" alt="ellip" /></li>
+          </ul>
         </nav>
         <div class="editor__main">
           <div></div>
@@ -72,7 +113,7 @@
             ></h1>
             <div class="editor__main-content-contentarea">
               <p
-                class="editor__main-content-content"
+                class="editor__main-content-text"
                 contenteditable="true"
                 placeholder="글을 작성하거나 AI를 사용하려면 '스페이스' 키를, 명령어를 사용하려면 ' / ' 키를 누르세요."
               ></p>

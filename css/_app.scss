@@ -1,11 +1,12 @@
+$text-grey: #63625f;
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: "Noto Sans";
 }
-
 .notion-app {
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
 }
