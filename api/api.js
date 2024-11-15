@@ -1,5 +1,5 @@
 //get
-const getAllData = async () => {
+export const getAllData = async () => {
   const res = await fetch(`https://kdt-api.fe.dev-cos.com/documents`, {
     headers: {
       "x-username": "denshou",
@@ -9,7 +9,7 @@ const getAllData = async () => {
   return data;
 };
 
-const getContent = async (id) => {
+export const getContent = async (id) => {
   const res = await fetch(`https://kdt-api.fe.dev-cos.com/documents/${id}`, {
     headers: {
       "x-username": "denshou",
@@ -20,7 +20,7 @@ const getContent = async (id) => {
 };
 
 //post
-const createDoc = async (id) => {
+export const createDoc = async (id = null) => {
   const res = await fetch(`https://kdt-api.fe.dev-cos.com/documents`, {
     method: "POST",
     headers: {
@@ -37,7 +37,7 @@ const createDoc = async (id) => {
 };
 
 //put
-const editContent = async (id, title, content) => {
+export const editContent = async (id, title, content) => {
   const res = await fetch(`https://kdt-api.fe.dev-cos.com/documents/${id}`, {
     method: "PUT",
     headers: {
@@ -54,7 +54,7 @@ const editContent = async (id, title, content) => {
 };
 
 //delete
-const deleteDoc = async () => {
+export const deleteDoc = async () => {
   const res = await fetch(`https://kdt-api.fe.dev-cos.com/documents/${id}`, {
     method: "DELETE",
     headers: {
