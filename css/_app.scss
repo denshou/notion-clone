@@ -9,4 +9,5 @@ $text-grey: #63625f;
 .notion-app {
   display: flex;
   min-height: 100vh;
+  overflow: hidden;
 }

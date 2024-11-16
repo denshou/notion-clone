@@ -131,6 +131,7 @@
 .sidebar__private {
   margin: 0 8px;
   border-radius: 6px;
+
   li {
     display: flex;
     justify-content: space-between;
@@ -145,12 +146,6 @@
     }
     &:active {
       background-color: #dbdbd9;
-    }
-    img {
-      width: 20px;
-      margin-right: 8px;
-      filter: invert(57%) sepia(0%) saturate(2387%) hue-rotate(244deg)
-        brightness(61%) contrast(76%);
     }
   }
   .sidebar__private-header {
@@ -171,15 +166,28 @@
       font-size: 12px;
     }
   }
+  .empty{
+    padding: 4px 8px;
+    color: rgba(55, 53, 47, 0.5);
+  }
 }
 .sidebar__private-left {
   display: flex;
+  margin-left: 0;
+  img {
+    width: 20px;
+    margin-right: 8px;
+    filter: invert(57%) sepia(0%) saturate(2387%) hue-rotate(244deg)
+      brightness(61%) contrast(76%);
+  }
 }
 .sidebar__private-buttons {
   display: flex;
   div {
     display: flex;
-    width: 15px;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
     margin-left: 2px;
     border-radius: 4px;
     &:hover {
@@ -195,10 +203,6 @@
     }
   }
 }
-
-
-
-
 
 .sidebar__setting {
   margin: 1rem 8px;

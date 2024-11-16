@@ -4,14 +4,15 @@
   max-width: calc(100% - 251px);
 }
 .editor__main {
-  overflow-y: auto;
   height: calc(100vh - 44px);
   display: grid;
-
   grid-template-columns: minmax(96px, 1fr) minmax(auto, 708px) minmax(96px, 1fr);
+  padding-bottom: 30vh;
+  overflow-y: auto;
 }
 .editor__main-content {
   padding-top: 112px;
+
   .editor__main-content-title {
     font-size: 40px;
     line-height: 1.4;
@@ -47,6 +48,27 @@
   align-items: center;
   height: 44px;
   padding: 0 12px;
+  font-size: 14px;
+  .editor__nav_naviagtor {
+    display: flex;
+    align-items: center;
+    color: #4d483f;
+    div {
+      display: flex;
+      border-radius: 6px;
+      padding: 2px 6px;
+      cursor: pointer;
+      &:hover {
+        background-color: #e4e4e2;
+      }
+      &:active {
+        background-color: #dbdbd9;
+      }
+    }
+    span{
+      color: rgba(55, 53, 47, 0.5);
+    }
+  }
 }
 .editor__nav-addi {
   display: flex;

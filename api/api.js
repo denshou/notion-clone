@@ -27,10 +27,10 @@ export const createDoc = async (id = null) => {
       "Content-Type": "application/json",
       "x-username": "denshou",
     },
-    body: {
+    body: JSON.stringify({
       title: "New Neo DK",
       parent: id,
-    },
+    }),
   });
   const data = await res.json();
   return data;
@@ -44,12 +44,13 @@ export const editContent = async (id, title, content) => {
       "Content-Type": "application/json",
       "x-username": "denshou",
     },
-    body: {
+    body: JSON.stringify({
       title: title,
       content: content,
-    },
+    }),
   });
   const data = await res.json();
+  console.log("저장되었습니다.");
   return data;
 };
 
