@@ -28,7 +28,7 @@ export const createDoc = async (id = null) => {
       "x-username": "denshou",
     },
     body: JSON.stringify({
-      title: "New Neo DK",
+      title: "",
       parent: id,
     }),
   });
@@ -55,7 +55,7 @@ export const editContent = async (id, title, content) => {
 };
 
 //delete
-export const deleteDoc = async () => {
+export const deleteDoc = async (id) => {
   const res = await fetch(`https://kdt-api.fe.dev-cos.com/documents/${id}`, {
     method: "DELETE",
     headers: {

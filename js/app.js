@@ -14,6 +14,7 @@ export const pages = {
 const createPageRoute = async (id) => {
   const data = await getContent(id);
   pages[id] = {
+    id,
     title: `${data.title}`,
     content: data.content === null ? "" : `${data.content}`,
   };
@@ -30,14 +31,33 @@ const initializePages = async () => {
   const ulEl = document.querySelector(".sidebar__private").querySelector("ul");
   while (ulEl.hasChildNodes()) ulEl.replaceChildren();
   makeList(data);
+
+  // 리스트 다시 생성 후 상태 복원
+  Object.keys(openStates).forEach((id) => {
+    const ul = document.querySelector(`li[data-id="${id}"] + ul`);
+    if (ul) ul.style.display = openStates[id] ? "block" : "none";
+  });
+
   data.forEach((page) => {
     createPageRoute(`${page.id}`);
   });
 };
 initializePages();
 
+//list를 새로 불러와도 펼쳐진 상태 유지
+let openStates = {};
+const saveOpenStates = () => {
+  const allLists = document.querySelectorAll(".sidebar__private ul");
+  allLists.forEach((ul) => {
+    const parentLi = ul.previousElementSibling?.closest("li");
+    if (parentLi) {
+      const id = parentLi.dataset.id;
+      openStates[id] = ul.style.display === "block";
+    }
+  });
+};
 //sidebar에서 하위 documents까지 리스트 생성
-const makeList = (data, depth = 0, ulEl = null) => {
+export const makeList = (data, depth = 0, ulEl = null) => {
   if (ulEl === null) ulEl = document.querySelector(".sidebar__private ul");
   // while (ulEl.hasChildNodes()) ulEl.replaceChildren();
   data.forEach((doc) => {
@@ -46,22 +66,49 @@ const makeList = (data, depth = 0, ulEl = null) => {
     const lileftEl = document.createElement("div");
     lileftEl.classList.add("sidebar__private-left");
     lileftEl.style.marginLeft = `${depth * 10}px`;
+    //문서 이미지
+    const imgDiv = document.createElement("div");
     const docImgEl = document.createElement("img");
     docImgEl.setAttribute("src", "/img/document.svg");
+    const docImgHiddenEl = document.createElement("img");
+    docImgHiddenEl.setAttribute("src", "/img/arrow-right.svg");
+    docImgHiddenEl.style.display = "none";
     const docTitleEl = document.createElement("span");
-    docTitleEl.textContent = doc.title;
-    lileftEl.appendChild(docImgEl);
+    if (doc.title === "") docTitleEl.textContent = "새 페이지";
+    else docTitleEl.textContent = doc.title;
+    imgDiv.appendChild(docImgEl);
+    imgDiv.appendChild(docImgHiddenEl);
+    lileftEl.appendChild(imgDiv);
     lileftEl.appendChild(docTitleEl);
     const lirightEl = document.createElement("div");
     lirightEl.classList.add("sidebar__private-buttons");
+
+    //삭제버튼
     const buttonEl1 = document.createElement("div");
     const buttonImgEl1 = document.createElement("img");
     buttonImgEl1.setAttribute("src", "/img/ellip-hor.svg");
+    buttonImgEl1.addEventListener("click", async (e) => {
+      e.stopPropagation();
+      const targetLi = e.target.closest("li");
+      const id = targetLi.dataset.id;
+      await deleteDoc(Number(id));
+      saveOpenStates();
+      initializePages();
+    });
     buttonEl1.appendChild(buttonImgEl1);
+
+    //하위 페이지 추가 버튼
     const buttonEl2 = document.createElement("div");
     const buttonImgEl2 = document.createElement("img");
     buttonImgEl2.setAttribute("src", "/img/plus.svg");
+    buttonImgEl2.addEventListener("click", async (e) => {
+      e.stopPropagation();
+      await createDoc(doc.id);
+      openStates[doc.id] = true;
+      initializePages();
+    });
     buttonEl2.appendChild(buttonImgEl2);
+
     lirightEl.appendChild(buttonEl1);
     lirightEl.appendChild(buttonEl2);
     liEl.appendChild(lileftEl);
@@ -74,21 +121,40 @@ const makeList = (data, depth = 0, ulEl = null) => {
       navigateTo(id);
       renderPage(pages[id]);
     });
+    //리스트 hover 이벤트
+    liEl.addEventListener("mouseover", (e) => {
+      lirightEl.style.display = "flex";
+      docImgEl.style.display = "none";
+      docImgHiddenEl.style.display = "block";
+    });
+    liEl.addEventListener("mouseout", (e) => {
+      lirightEl.style.display = "none";
+      docImgEl.style.display = "block";
+      docImgHiddenEl.style.display = "none";
+    });
 
     //만약 하위 documents가 있다면 재귀
     if (doc.documents) {
       const subUl = document.createElement("ul");
-      subUl.style.display = "none";
+      subUl.style.display = openStates[doc.id] ? "block" : "none"; // 초기 상태 복원
       ulEl.appendChild(subUl);
 
       //doc 이미지 클릭 시 하위 documents 보여줌
-      docImgEl.addEventListener("click", (e) => {
+      docImgHiddenEl.addEventListener("click", (e) => {
         e.stopPropagation();
-        subUl.style.display = subUl.style.display === "none" ? "block" : "none";
+        const isOpen = subUl.style.display === "block";
+        subUl.style.display = isOpen ? "none" : "block";
+
+        openStates[doc.id] = !isOpen;
+        //openStates 에 따라 화살표 방향 변경
+        if (openStates[doc.id])
+          docImgHiddenEl.setAttribute("src", "/img/arrow-down.svg");
+        else docImgHiddenEl.setAttribute("src", "/img/arrow-right.svg");
       });
 
       if (doc.documents.length > 0) {
         makeList(doc.documents, depth + 1, subUl);
+        subUl.style.display = openStates[doc.id] ? "block" : "none";
       } else {
         const newDiv = document.createElement("div");
         newDiv.classList.add("empty");
@@ -108,7 +174,7 @@ const divideContent = (content) => {
 
 const nav = document.querySelector(".editor__nav").querySelector("div");
 //화면에 title, content 표시하기
-const renderPage = (data) => {
+export const renderPage = (data) => {
   //data={ title: `${data.title}`, content: `${data.content}` }
   const titleEl = document
     .querySelector(".editor__main-content")
@@ -125,16 +191,13 @@ const renderPage = (data) => {
     pEl.textContent = sentence;
     pEl.classList.add("editor__main-content-text");
     pEl.setAttribute("contenteditable", "true");
-    pEl.setAttribute(
-      "placeholder",
-      "글을 작성하거나 AI를 사용하려면 '스페이스' 키를, 명령어를 사용하려면 ' / ' 키를 누르세요."
-    );
+
     contentAreaEl.appendChild(pEl);
   });
 
   nav.textContent = data.title;
 };
-const navigateTo = (id) => {
+export const navigateTo = (id) => {
   history.pushState({ id: id }, "", `/${id}`);
 };
 
@@ -145,7 +208,15 @@ window.addEventListener("popstate", (e) => {
 
 //개인 페이지 hide show
 const pageHeaderEl = document.querySelector(".sidebar__private-header");
+const buttons = pageHeaderEl.querySelector(".sidebar__private-buttons");
 pageHeaderEl.addEventListener("click", () => {
   const ulEl = document.querySelector(".sidebar__private ul");
   ulEl.style.display = ulEl.style.display === "none" ? "block" : "none";
+});
+//header hover 이벤트
+pageHeaderEl.addEventListener("mouseover", () => {
+  buttons.style.display = "flex";
+});
+pageHeaderEl.addEventListener("mouseout", () => {
+  buttons.style.display = "none";
 });
