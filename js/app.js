@@ -17,6 +17,7 @@ const createPageRoute = async (id) => {
     id,
     title: `${data.title}`,
     content: data.content === null ? "" : `${data.content}`,
+    documents: data.documents,
   };
 
   if (data.documents && data.documents.length > 0) {
@@ -116,21 +117,30 @@ export const makeList = (data, depth = 0, ulEl = null) => {
     ulEl.appendChild(liEl);
 
     //리스트 클릭 시 이동
-    liEl.addEventListener("click", (e) => {
+    liEl.addEventListener("click", async (e) => {
       const id = e.currentTarget.dataset.id;
       navigateTo(id);
       renderPage(pages[id]);
+
+      const navEl = document.querySelector(".editor__nav_naviagtor");
+      if (navEl.hasChildNodes()) navEl.replaceChildren();
+      const currentPath = await findNav(id);
+      renderNav(currentPath);
     });
     //리스트 hover 이벤트
     liEl.addEventListener("mouseover", (e) => {
       lirightEl.style.display = "flex";
       docImgEl.style.display = "none";
       docImgHiddenEl.style.display = "block";
+
+      lileftEl.style.width = "80%";
     });
     liEl.addEventListener("mouseout", (e) => {
       lirightEl.style.display = "none";
       docImgEl.style.display = "block";
       docImgHiddenEl.style.display = "none";
+
+      lileftEl.style.width = "100%";
     });
 
     //만약 하위 documents가 있다면 재귀
@@ -147,9 +157,8 @@ export const makeList = (data, depth = 0, ulEl = null) => {
 
         openStates[doc.id] = !isOpen;
         //openStates 에 따라 화살표 방향 변경
-        if (openStates[doc.id])
-          docImgHiddenEl.setAttribute("src", "/img/arrow-down.svg");
-        else docImgHiddenEl.setAttribute("src", "/img/arrow-right.svg");
+        if (openStates[doc.id]) docImgHiddenEl.classList.add("rotated");
+        else docImgHiddenEl.classList.remove("rotated");
       });
 
       if (doc.documents.length > 0) {
@@ -195,8 +204,66 @@ export const renderPage = (data) => {
     contentAreaEl.appendChild(pEl);
   });
 
-  nav.textContent = data.title;
+  //현재 페이지에 하위 document editor에 출력
+  const documents = data.documents;
+  if (documents && documents.length > 0) {
+    for (let item of documents) {
+      const newWrapper = document.createElement("div");
+      newWrapper.classList.add("linkWrapper");
+      newWrapper.setAttribute("data-id", item.id);
+      const newImgDiv = document.createElement("div");
+      newImgDiv.style.marginRight = "8px";
+      const newImg = document.createElement("img");
+      newImg.setAttribute("src", "/img/document.svg");
+      newImgDiv.appendChild(newImg);
+      newWrapper.appendChild(newImgDiv);
+      const newSpan = document.createElement("span");
+      newSpan.textContent = item.title === "" ? "새 페이지" : item.title;
+      newWrapper.appendChild(newSpan);
+      contentAreaEl.appendChild(newWrapper);
+
+      newWrapper.addEventListener("click", (e) => {
+        navigateTo(item.id);
+        renderPage(pages[item.id]);
+      });
+    }
+  }
+
+  nav.textContent = data.title === "" ? "새 페이지" : data.title;
 };
+
+const findNav = async (id) => {
+  const data = await getAllData();
+  const circuitData = (data) => {
+    for (const doc of data) {
+      const currentPath = [doc.id];
+      if (doc.id === Number(id)) return currentPath;
+
+      if (doc.documents && doc.documents.length > 0) {
+        const res = circuitData(doc.documents);
+        if (res) return currentPath.concat(res);
+      }
+    }
+    return null;
+  };
+  return circuitData(data) || [];
+};
+const renderNav = (currentPath) => {
+  const navEl = document.querySelector(".editor__nav_naviagtor");
+
+  currentPath.forEach((id, index) => {
+    const newDiv = document.createElement("div");
+    newDiv.setAttribute("data-id", id);
+    newDiv.textContent = pages[id].title === "" ? "새 페이지" : pages[id].title;
+    navEl.appendChild(newDiv);
+    if (index !== currentPath.length - 1) {
+      const newSpan = document.createElement("span");
+      newSpan.textContent = "/";
+      navEl.appendChild(newSpan);
+    }
+  });
+};
+
 export const navigateTo = (id) => {
   history.pushState({ id: id }, "", `/${id}`);
 };

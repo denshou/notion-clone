@@ -173,6 +173,7 @@
 .sidebar__private-left {
   display: flex;
   margin-left: 0;
+  width: 100%;
 }
 .sidebar__private-left div {
   display: flex;
@@ -186,10 +187,19 @@
 .sidebar__private-left div:active {
   background-color: #c7c7c5;
 }
+.sidebar__private-left span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .sidebar__private-left img {
   width: 20px;
   margin-right: 8px;
   filter: invert(57%) sepia(0%) saturate(2387%) hue-rotate(244deg) brightness(61%) contrast(76%);
+  transition: all 0.1s ease-in-out;
+}
+.sidebar__private-left .rotated {
+  transform: rotate(90deg);
 }
 
 .sidebar__private-buttons {
@@ -318,6 +328,30 @@
 }
 .editor__main-content .editor__main-content-contentarea {
   padding-top: 5px;
+}
+.editor__main-content .editor__main-content-contentarea .linkWrapper {
+  display: flex;
+  align-items: center;
+  padding: 3px 0 3px 2px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.editor__main-content .editor__main-content-contentarea .linkWrapper:hover {
+  background-color: #efefed;
+}
+.editor__main-content .editor__main-content-contentarea .linkWrapper div {
+  display: flex;
+  border-radius: 4px;
+  padding: 1px 0;
+}
+.editor__main-content .editor__main-content-contentarea .linkWrapper div:hover {
+  background-color: #dbdbd9;
+}
+.editor__main-content .editor__main-content-contentarea .linkWrapper div:active {
+  background-color: #c4c4c1;
+}
+.editor__main-content .editor__main-content-contentarea .linkWrapper img {
+  filter: invert(57%) sepia(0%) saturate(2387%) hue-rotate(244deg) brightness(61%) contrast(76%);
 }
 
 .editor__nav {

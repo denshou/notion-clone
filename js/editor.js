@@ -95,7 +95,9 @@ contentAreaEl.addEventListener("keydown", (e) => {
     newPEl.classList.add("editor__main-content-text");
     newPEl.setAttribute("contenteditable", "true");
 
-    contentAreaEl.appendChild(newPEl);
+    const currentPEl = document.querySelector("p:focus");
+    const nextPEl = currentPEl.nextElementSibling;
+    contentAreaEl.insertBefore(newPEl, nextPEl);
     newPEl.focus();
   }
   //백스페이스
@@ -117,11 +119,15 @@ contentAreaEl.addEventListener("keydown", (e) => {
         selection.removeAllRanges(); // 기존 선택 범위 제거
         selection.addRange(range); // 새로운 범위 설정
       } else {
-        currentPEl.previousSibling.focus();
+        let previousEl = currentPEl.previousElementSibling;
+        while (previousEl && previousEl.tagName !== "P")
+          previousEl = previousEl.previousElementSibling;
+        if (previousEl) previousEl.focus();
+
         // 커서를 끝으로 이동
         const range = document.createRange();
         const selection = window.getSelection();
-        range.selectNodeContents(currentPEl.previousSibling); // title 내용 전체 선택
+        range.selectNodeContents(previousEl); // title 내용 전체 선택
         range.collapse(false); // 커서를 끝으로 이동
         selection.removeAllRanges(); // 기존 선택 범위 제거
         selection.addRange(range); // 새로운 범위 설정

@@ -40,6 +40,32 @@
   }
   .editor__main-content-contentarea {
     padding-top: 5px;
+    //하위doc
+    .linkWrapper {
+      display: flex;
+      align-items: center;
+      padding: 3px 0 3px 2px;
+      border-radius: 4px;
+      cursor: pointer;
+      &:hover {
+        background-color: #efefed;
+      }
+      div {
+        display: flex;
+        border-radius: 4px;
+        padding: 1px 0;
+        &:hover {
+          background-color: #dbdbd9;
+        }
+        &:active {
+          background-color: #c4c4c1;
+        }
+      }
+      img {
+        filter: invert(57%) sepia(0%) saturate(2387%) hue-rotate(244deg)
+          brightness(61%) contrast(76%);
+      }
+    }
   }
 }
 .editor__nav {
@@ -65,7 +91,7 @@
         background-color: #dbdbd9;
       }
     }
-    span{
+    span {
       color: rgba(55, 53, 47, 0.5);
     }
   }
