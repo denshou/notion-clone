@@ -37,8 +37,16 @@ titleEl.addEventListener(
     //사이드바에 있는 title 실시간 업데이트
     const titleOnList = document.querySelector(`[data-id='${id}']`);
     const title = titleOnList.querySelector("div span");
-    if (e.target.textContent === "") title.textContent = "새 페이지";
+    if (e.target.textContent === "" || e.target.textContent === null)
+      title.textContent = "새 페이지";
     else title.textContent = e.target.textContent;
+
+    //nav에 있는 tite 실시간 업데이트
+    const navEl = document.querySelector(".editor__nav_naviagtor");
+    const currentNavTitle = navEl.querySelector(`[data-id='${id}']`);
+    if (e.target.textContent === "" || e.target.textContent === null)
+      currentNavTitle.textContent = "새 페이지";
+    else currentNavTitle.textContent = e.target.textContent;
 
     await editContent(Number(id), e.target.textContent, content);
     createPageRoute(id);
