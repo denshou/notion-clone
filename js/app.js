@@ -33,20 +33,26 @@ const initializePages = async () => {
   while (ulEl.hasChildNodes()) ulEl.replaceChildren();
   makeList(data);
 
-  // 리스트 다시 생성 후 상태 복원
-  Object.keys(openStates).forEach((id) => {
-    const ul = document.querySelector(`li[data-id="${id}"] + ul`);
-    if (ul) ul.style.display = openStates[id] ? "block" : "none";
-  });
-
   data.forEach((page) => {
     createPageRoute(`${page.id}`);
   });
 };
 initializePages();
 
-//list를 새로 불러와도 펼쳐진 상태 유지하기 위해 저장
-let openStates = {};
+//"하위 페이지 없음" 생성 함수
+const createEmpty = (ulEl, depth = null) => {
+  const newDiv = document.createElement("div");
+  newDiv.classList.add("empty");
+  newDiv.textContent = "하위 페이지 없음";
+  if (depth) newDiv.style.marginLeft = `${(depth + 2) * 10}px`;
+  else {
+    const getPrev = ulEl.previousElementSibling;
+    const getPrevMargin = getPrev.querySelector("div").style.marginLeft;
+    const numeric = parseInt(getPrevMargin);
+    newDiv.style.marginLeft = `${numeric + 20}px`;
+  }
+  ulEl.appendChild(newDiv);
+};
 
 const createListItem = (doc, depth, ulEl) => {
   const liEl = document.createElement("li");
@@ -76,9 +82,9 @@ const createListItem = (doc, depth, ulEl) => {
   lileftEl.appendChild(docTitleEl);
   const lirightEl = document.createElement("div");
   lirightEl.classList.add("sidebar__private-buttons");
-
+  //하위 문서가 들어갈 숨겨진 ul 생성
   const subUl = document.createElement("ul");
-  subUl.style.display = openStates[doc.id] ? "block" : "none"; // 초기 상태 복원
+  subUl.style.display = "none";
   ulEl.appendChild(subUl);
 
   //삭제버튼
@@ -121,14 +127,7 @@ const createListItem = (doc, depth, ulEl) => {
     ulEl.removeChild(targetLi);
     //삭제 시 하위doc이 없다면 "하위 페이지 없음" 추가
     if (!ulEl.firstChild) {
-      const newDiv = document.createElement("div");
-      newDiv.classList.add("empty");
-      newDiv.textContent = "하위 페이지 없음";
-      const getPrev = ulEl.previousElementSibling;
-      const getPrevMargin = getPrev.querySelector("div").style.marginLeft;
-      const numeric = parseInt(getPrevMargin);
-      newDiv.style.marginLeft = `${numeric + 20}px`;
-      ulEl.appendChild(newDiv);
+      createEmpty(ulEl);
     }
 
     //하위 삭제 버튼 클릭 시 editor 바로 반영
@@ -150,8 +149,7 @@ const createListItem = (doc, depth, ulEl) => {
     const current = e.target.closest("li");
     let nextUl = current.nextElementSibling;
     //화살표 변경
-    openStates[doc.id] = true;
-    if (openStates[doc.id]) docImgHiddenEl.classList.add("rotated");
+    docImgHiddenEl.classList.add("rotated");
 
     nextUl.style.display = "block";
     //생성 클릭 시 하위 doc을 리스트에 생성
@@ -209,51 +207,22 @@ const createListItem = (doc, depth, ulEl) => {
     const isOpen = subUl.style.display === "block";
     subUl.style.display = isOpen ? "none" : "block";
 
-    openStates[doc.id] = !isOpen;
-    //openStates 에 따라 화살표 방향 변경
-    if (openStates[doc.id]) docImgHiddenEl.classList.add("rotated");
-    else docImgHiddenEl.classList.remove("rotated");
+    docImgHiddenEl.classList.toggle("rotated");
 
     //하위 doc 보여주는 버튼 클릭했을 때 아무것도 없으면
     const hiddenUl = e.target.closest("li").nextElementSibling;
-    console.log(hiddenUl);
     if (!hiddenUl.firstChild) {
-      console.log("hi");
-      const newDiv = document.createElement("div");
-      newDiv.classList.add("empty");
-      newDiv.textContent = "하위 페이지 없음";
-      const getPrev = hiddenUl.previousElementSibling;
-      const getPrevMargin = getPrev.querySelector("div").style.marginLeft;
-      const numeric = parseInt(getPrevMargin);
-      newDiv.style.marginLeft = `${numeric + 20}px`;
-      hiddenUl.appendChild(newDiv);
+      createEmpty(hiddenUl);
     }
   });
 
   //만약 하위 documents가 있다면 재귀
   if (doc.documents) {
-    // //doc 이미지 클릭 시 하위 documents 보여줌
-    // docImgHiddenEl.addEventListener("click", (e) => {
-    //   e.stopPropagation();
-    //   console.log("hi");
-    //   const isOpen = subUl.style.display === "block";
-    //   subUl.style.display = isOpen ? "none" : "block";
-
-    //   openStates[doc.id] = !isOpen;
-    //   //openStates 에 따라 화살표 방향 변경
-    //   if (openStates[doc.id]) docImgHiddenEl.classList.add("rotated");
-    //   else docImgHiddenEl.classList.remove("rotated");
-    // });
-
     if (doc.documents.length > 0) {
       makeList(doc.documents, depth + 1, subUl);
-      subUl.style.display = openStates[doc.id] ? "block" : "none";
+      subUl.style.display = "none";
     } else {
-      const newDiv = document.createElement("div");
-      newDiv.classList.add("empty");
-      newDiv.textContent = "하위 페이지 없음";
-      newDiv.style.marginLeft = `${(depth + 2) * 10}px`;
-      subUl.appendChild(newDiv);
+      createEmpty(subUl, depth);
     }
   }
 };
@@ -380,9 +349,14 @@ export const navigateTo = (id) => {
   history.pushState({ id: id }, "", `/${id}`);
 };
 
-window.addEventListener("popstate", (e) => {
+window.addEventListener("popstate", async (e) => {
   const id = e.state?.id || "/";
   renderPage(pages[id]);
+  //nav업데이트
+  const navEl = document.querySelector(".editor__nav_naviagtor");
+  if (navEl.hasChildNodes()) navEl.replaceChildren();
+  const currentPath = await findNav(id);
+  renderNav(currentPath);
 });
 
 //개인 페이지 hide show
