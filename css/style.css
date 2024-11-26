@@ -12,10 +12,12 @@
 }
 
 .sidebar {
+  position: relative;
   background-color: #f7f7f5;
   min-width: 251px;
   position: relative;
   max-height: 100vh;
+  transition: all 0.2s ease-in-out;
 }
 
 .sidebar__header {
@@ -74,6 +76,7 @@
 }
 .sidebar__header-aside .hide {
   margin-right: 3px;
+  transition: all 0.2s ease-in-out;
 }
 .sidebar__header-aside .hide img {
   filter: invert(68%) sepia(6%) saturate(112%) hue-rotate(22deg) brightness(96%) contrast(87%);

@@ -373,3 +373,63 @@ pageHeaderEl.addEventListener("mouseover", () => {
 pageHeaderEl.addEventListener("mouseout", () => {
   buttons.style.display = "none";
 });
+
+const editorMainEl = document.querySelector(".editor__main");
+const editorContentArea = document.querySelector(
+  ".editor__main-content-contentarea"
+);
+
+//editor 내부 클릭했을 때
+editorMainEl.addEventListener("click", (e) => {
+  const { clientX, clientY } = e; // 클릭 좌표
+  const pEls = editorContentArea.querySelectorAll("p"); // 모든 <p> 요소 수집
+
+  let nearestP = null;
+  let minDistance = Infinity;
+
+  pEls.forEach((p) => {
+    const rect = p.getBoundingClientRect(); // 요소의 위치 및 크기 정보
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+
+    // 유클리드 거리 계산
+    const distance = Math.sqrt(
+      (centerX - clientX) ** 2 + (centerY - clientY) ** 2
+    );
+
+    if (distance < minDistance) {
+      minDistance = distance;
+      nearestP = p;
+    }
+  });
+
+  if (nearestP) {
+    if (e.target.tagName !== "P") {
+      nearestP.focus();
+      if (clientX > nearestP.getBoundingClientRect().right) {
+        const range = document.createRange();
+        const selection = window.getSelection();
+        range.selectNodeContents(nearestP); // title 내용 전체 선택
+        range.collapse(false); // 커서를 끝으로 이동
+        selection.removeAllRanges(); // 기존 선택 범위 제거
+        selection.addRange(range); // 새로운 범위 설정
+      }
+      if (
+        clientY >
+        editorContentArea.lastElementChild.getBoundingClientRect().bottom
+      ) {
+        if (nearestP.textContent === "") nearestP.focus();
+        else {
+          const pEl = document.createElement("p");
+          pEl.classList.add("editor__main-content-text");
+          pEl.setAttribute("contenteditable", "true");
+
+          editorContentArea.append(pEl);
+          pEl.focus();
+        }
+      }
+    }
+  } else {
+    console.log("<p> 요소를 찾을 수 없습니다.");
+  }
+});
