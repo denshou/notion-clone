@@ -2,6 +2,7 @@
   background-color: white;
   width: 100%;
   max-width: calc(100% - 251px);
+  transition: all 0.2s ease-in-out;
 }
 .editor__main {
   height: calc(100vh - 44px);
@@ -75,6 +76,39 @@
   height: 44px;
   padding: 0 12px;
   font-size: 14px;
+  position: relative;
+  .editor__nav-left {
+    display: flex;
+    align-items: center;
+    .hide {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 6px;
+      width: 28px;
+      height: 28px;
+      margin-right: 3px;
+      position: absolute;
+      left: -70px;
+      cursor: pointer;
+      opacity: 0;
+
+      img {
+        filter: invert(68%) sepia(6%) saturate(112%) hue-rotate(22deg)
+          brightness(96%) contrast(87%);
+      }
+      &:hover {
+        background-color: #e4e4e2;
+        img {
+          filter: invert(25%) sepia(14%) saturate(238%) hue-rotate(14deg)
+            brightness(95%) contrast(93%);
+        }
+      }
+      &:active {
+        background-color: #dbdbd9;
+      }
+    }
+  }
   .editor__nav_naviagtor {
     display: flex;
     align-items: center;

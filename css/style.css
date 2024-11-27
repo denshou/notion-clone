@@ -12,7 +12,6 @@
 }
 
 .sidebar {
-  position: relative;
   background-color: #f7f7f5;
   min-width: 251px;
   position: relative;
@@ -293,6 +292,7 @@
   background-color: white;
   width: 100%;
   max-width: calc(100% - 251px);
+  transition: all 0.2s ease-in-out;
 }
 
 .editor__main {
@@ -364,6 +364,36 @@
   height: 44px;
   padding: 0 12px;
   font-size: 14px;
+  position: relative;
+}
+.editor__nav .editor__nav-left {
+  display: flex;
+  align-items: center;
+}
+.editor__nav .editor__nav-left .hide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px;
+  width: 28px;
+  height: 28px;
+  margin-right: 3px;
+  position: absolute;
+  left: -70px;
+  cursor: pointer;
+  opacity: 0;
+}
+.editor__nav .editor__nav-left .hide img {
+  filter: invert(68%) sepia(6%) saturate(112%) hue-rotate(22deg) brightness(96%) contrast(87%);
+}
+.editor__nav .editor__nav-left .hide:hover {
+  background-color: #e4e4e2;
+}
+.editor__nav .editor__nav-left .hide:hover img {
+  filter: invert(25%) sepia(14%) saturate(238%) hue-rotate(14deg) brightness(95%) contrast(93%);
+}
+.editor__nav .editor__nav-left .hide:active {
+  background-color: #dbdbd9;
 }
 .editor__nav .editor__nav_naviagtor {
   display: flex;

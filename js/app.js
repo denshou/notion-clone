@@ -404,7 +404,7 @@ editorMainEl.addEventListener("click", (e) => {
   });
 
   if (nearestP) {
-    if (e.target.tagName !== "P") {
+    if (e.target.tagName !== "P" && e.target.tagName !== "H1") {
       nearestP.focus();
       if (clientX > nearestP.getBoundingClientRect().right) {
         const range = document.createRange();

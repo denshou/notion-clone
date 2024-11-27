@@ -31,9 +31,6 @@
             </div>
           </div>
           <div class="sidebar__header-aside">
-            <div class="sidebar__header_button hide">
-              <img src="/img/double-arrow-left.svg" alt="doublearrowleft" />
-            </div>
             <div class="sidebar__header_button create">
               <img src="/img/create.svg" alt="create" />
             </div>
@@ -97,7 +94,11 @@
       </nav>
       <div class="editor">
         <nav class="editor__nav">
-          <div class="editor__nav_naviagtor">
+          <div class="editor__nav-left">
+            <div class="sidebar__header_button hide">
+              <img src="/img/double-arrow-left.svg" alt="doublearrowleft" />
+            </div>
+            <div class="editor__nav_naviagtor"></div>
           </div>
           <ul class="editor__nav-addi">
             <li><span>공유</span></li>
@@ -114,7 +115,9 @@
               class="editor__main-content-title"
               contenteditable="true"
               placeholder="새 페이지"
-            >Notion Clone</h1>
+            >
+              Notion Clone
+            </h1>
             <div class="editor__main-content-contentarea">
               <p
                 class="editor__main-content-text"
